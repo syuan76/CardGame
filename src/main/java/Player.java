@@ -1,15 +1,18 @@
 import java.util.ArrayList;
 
 public class Player {
+    // Instance variables
     private String name;
     private ArrayList<Card> hand;
     private int points;
 
+    // Constructor that takes in a name
     public Player(String name) {
         this.name = name;
         points = 0;
     }
 
+    // Constructor that takes in a name and hand of cards
     public Player(String name, ArrayList<Card> hand) {
         this.name = name;
         this.hand = hand;

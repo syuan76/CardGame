@@ -1,10 +1,14 @@
 import java.util.ArrayList;
 
 public class Deck {
+    // Instance variables
     private ArrayList<Card> cards;
     private int cardsLeft;
 
-    public Deck(String[] ranks, String[] suits, int[] values) {
+    // Constructor
+    public Deck(String[] suits, String[] ranks, int[] values) {
+        cards = new ArrayList<Card>();
+
         for (int i = 0; i < suits.length; i++) {
             for (int j = 0; j < ranks.length; j++) {
                 cards.add(new Card(suits[i], ranks[j], values[j]));
