@@ -28,6 +28,13 @@ public class Deck {
         return cardsLeft;
     }
 
+    public Card deal() {
+        if (cards.isEmpty()) {
+            return null;
+        }
+        return cards.get(cardsLeft--);
+    }
+
     public void shuffle() {
         for (int i = cards.size() - 1; i > 0; i--) {
             int r = (int)(Math.random()*(i+1));

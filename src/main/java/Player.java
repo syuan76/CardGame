@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Player {
     // Instance variables
@@ -23,6 +24,10 @@ public class Player {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public ArrayList<Card> getHand() {
         return hand;
     }
@@ -37,6 +42,13 @@ public class Player {
 
     public void addCard(Card card) {
         hand.add(card);
+    }
+
+    // Method work in progress
+    public Card playCard(Card card) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println(name + ", please choose a card to play (enter the index of a card in your hand): ");
+        return card;
     }
 
     public String toString() {
