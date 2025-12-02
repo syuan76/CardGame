@@ -25,8 +25,11 @@ public class Game {
         printInstructions();
         Scanner sc = new Scanner(System.in);
         this.deck.shuffle();
+        topCard = deck.getCards().get(0);
         getPlayerNames();
         dealCards();
+        takeTurn(player1);
+        takeTurn(player2);
     }
 
     private void printInstructions() {
@@ -52,6 +55,39 @@ public class Game {
     // Returns true if the card "matches" the top card
     public boolean isValid(Card card) {
         return card.getSuit().equals(topCard.getSuit()) || card.getRank().equals(topCard.getRank());
+    }
+
+    public void showHand(Player p) {
+        System.out.println(p.getName() + "'s hand:");
+        for (int i = 0; i < p.getHand().size(); i++) {
+            System.out.println(p.getHand().get(i));
+        }
+    }
+
+    public void takeTurn(Player p) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println(p.getName() + "'s Turn");
+        System.out.println("Top card: " + topCard);
+        showHand(p);
+        int index;
+        Card chosen;
+        while (true) {
+            System.out.println("Choose a card index to play: ");
+            index = sc.nextInt();
+            if (index < 0 || index >= p.getHand().size()) {
+                System.out.println("Invalid index. Try again!");
+                continue;
+            }
+            chosen = p.getHand().get(index);
+            if (!isValid(chosen)) {
+                System.out.println("You cannot play this card. Choose a matching suit or rank.");
+            } else {
+                break;
+            }
+        }
+        p.getHand().remove(index);
+        topCard = chosen;
     }
 
     public static void main(String[] args) {

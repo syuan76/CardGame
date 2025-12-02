@@ -28,11 +28,16 @@ public class Deck {
         return cardsLeft;
     }
 
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
     public Card deal() {
         if (cards.isEmpty()) {
             return null;
         }
-        return cards.get(cardsLeft--);
+        cardsLeft--;
+        return cards.get(cardsLeft);
     }
 
     public void shuffle() {

@@ -10,6 +10,7 @@ public class Player {
     // Constructor that takes in a name
     public Player(String name) {
         this.name = name;
+        this.hand = new ArrayList<Card>();
         points = 0;
     }
 
@@ -44,11 +45,11 @@ public class Player {
         hand.add(card);
     }
 
-    // Method work in progress
-    public Card playCard(Card card) {
+    public Card playCard() {
         Scanner sc = new Scanner(System.in);
         System.out.println(name + ", please choose a card to play (enter the index of a card in your hand): ");
-        return card;
+        int index = sc.nextInt();
+        return hand.get(index);
     }
 
     public String toString() {
