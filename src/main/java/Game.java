@@ -8,6 +8,9 @@ public class Game {
     private Player player2;
     private Deck deck;
     private Card topCard;
+    // WORK IN PROGRESS: Both booleans will be true when both players have attempted to draw from an empty deck.
+    private boolean failedDraw1;
+    private boolean failedDraw2;
 
     // Constructor
     public Game() {
@@ -19,6 +22,8 @@ public class Game {
         int[] values   = {2,3,4,5,6,7,8,9,10,10,10,10,11};
 
         this.deck = new Deck(suits, ranks, values);
+        failedDraw1 = false;
+        failedDraw2 = false;
     }
 
     public void playGame() {
@@ -28,8 +33,13 @@ public class Game {
         topCard = deck.getCards().get(0);
         getPlayerNames();
         dealCards();
-        takeTurn(player1);
-        takeTurn(player2);
+
+        while (!ifGameOver()) {
+            takeTurn(player1);
+            takeTurn(player2);
+        }
+
+        printWinner();
     }
 
     private void printInstructions() {
@@ -60,8 +70,21 @@ public class Game {
     public void showHand(Player p) {
         System.out.println(p.getName() + "'s hand:");
         for (int i = 0; i < p.getHand().size(); i++) {
-            System.out.println(p.getHand().get(i));
+            System.out.println("[" + i + "] " + p.getHand().get(i));
         }
+    }
+
+    public boolean containsValidCard(Player p) {
+        for (int i = 0; i < p.getHand().size(); i++) {
+            if (p.getHand().get(i).getSuit().equals(topCard.getSuit()) || p.getHand().get(i).getRank().equals(topCard.getRank())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void drawCard(Player p) {
+        p.getHand().add(deck.deal());
     }
 
     public void takeTurn(Player p) {
@@ -70,8 +93,31 @@ public class Game {
         System.out.println(p.getName() + "'s Turn");
         System.out.println("Top card: " + topCard);
         showHand(p);
+        String input;
+        int numDraws = 0;
         int index;
         Card chosen;
+        while (!containsValidCard(p)) {
+            if (numDraws == 3) {
+                System.out.println("You have now drawn 3 times in a row, so we will skip your turn.");
+                return;
+            }
+            System.out.println("You do not have any valid cards in your hand to play. Please type 'd' to draw from the deck.");
+            input = sc.nextLine();
+            if (input.equals("d")) {
+                if (!deck.isEmpty()) {
+                    drawCard(p);
+                    numDraws++;
+                } else {
+                    System.out.println("The deck has run out of cards to draw.");
+                    return;
+                }
+            } else {
+                continue;
+            }
+            System.out.println("Top Card: " + topCard);
+            showHand(p);
+        }
         while (true) {
             System.out.println("Choose a card index to play: ");
             index = sc.nextInt();
@@ -88,6 +134,18 @@ public class Game {
         }
         p.getHand().remove(index);
         topCard = chosen;
+    }
+
+    public boolean ifGameOver() {
+        return player1.getHand().isEmpty() || player2.getHand().isEmpty();
+    }
+
+    public void printWinner() {
+        if (player1.getHand().isEmpty()) {
+            System.out.println(player1.getName() + " won!");
+        } else if (player2.getHand().isEmpty()) {
+            System.out.println(player2.getName() + " won!");
+        }
     }
 
     public static void main(String[] args) {
