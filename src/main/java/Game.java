@@ -8,9 +8,6 @@ public class Game {
     private Player player2;
     private Deck deck;
     private Card topCard;
-    // WORK IN PROGRESS: Both booleans will be true when both players have attempted to draw from an empty deck.
-    private boolean failedDraw1;
-    private boolean failedDraw2;
 
     // Constructor
     public Game() {
@@ -22,8 +19,6 @@ public class Game {
         int[] values   = {2,3,4,5,6,7,8,9,10,10,10,10,11};
 
         this.deck = new Deck(suits, ranks, values);
-        failedDraw1 = false;
-        failedDraw2 = false;
     }
 
     public void playGame() {
@@ -110,6 +105,7 @@ public class Game {
                     numDraws++;
                 } else {
                     System.out.println("The deck has run out of cards to draw.");
+                    p.setFailedDraw(true);
                     return;
                 }
             } else {
@@ -137,7 +133,7 @@ public class Game {
     }
 
     public boolean ifGameOver() {
-        return player1.getHand().isEmpty() || player2.getHand().isEmpty();
+        return player1.getHand().isEmpty() || player2.getHand().isEmpty() || player1.isFailedDraw() && player2.isFailedDraw();
     }
 
     public void printWinner() {
@@ -145,6 +141,15 @@ public class Game {
             System.out.println(player1.getName() + " won!");
         } else if (player2.getHand().isEmpty()) {
             System.out.println(player2.getName() + " won!");
+        } else if (deck.isEmpty()) {
+            System.out.println("The deck is empty and neither player can make progress anymore! The winner will be the one with the smallest number of cards in their hand.");
+            if (player1.getHand().size() > player2.getHand().size()) {
+                System.out.println(player1.getName() + " won!");
+            } else if (player2.getHand().size() > player1.getHand().size()) {
+                System.out.println(player2.getName() + " won!");
+            } else {
+                System.out.println("Tie!");
+            }
         }
     }
 
