@@ -42,6 +42,7 @@ public class Deck {
 
     public void shuffle() {
         for (int i = cards.size() - 1; i > 0; i--) {
+            // CONTENT STANDARD: Can use Math class, especially Math.random().
             int r = (int)(Math.random()*(i+1));
             Card placeholder = cards.get(r);
             cards.set(r, cards.get(i));

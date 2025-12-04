@@ -11,6 +11,7 @@ public class Game {
 
     // Constructor
     public Game() {
+        // CONTENT STANDARD: Declare, initialize and assign a value to a variable, be it a primitive or object.
         this.player1 = new Player("1");
         this.player2 = new Player("2");
 
@@ -23,22 +24,41 @@ public class Game {
 
     public void playGame() {
         printInstructions();
-        Scanner sc = new Scanner(System.in);
         this.deck.shuffle();
-        topCard = deck.getCards().get(0);
         getPlayerNames();
         dealCards();
+        topCard = deck.deal();
 
-        while (!ifGameOver()) {
+        while (true) {
             takeTurn(player1);
+            if (ifGameOver()) {
+                break;
+            }
             takeTurn(player2);
+            if (ifGameOver()) {
+                break;
+            }
         }
 
         printWinner();
     }
 
     private void printInstructions() {
-        System.out.println("INSTRUCTIONS: Crazy 8's");
+        printSeparator();
+        System.out.println("CRAZY 8'S");
+        printSeparator();
+        System.out.println("INSTRUCTIONS: Try to get rid of all your cards! This is a two-player card game. To start, each player is dealt 7 cards.");
+        System.out.println("- You can play any card of the same suit as the Top Card.");
+        System.out.println("- You can play any card of the same rank as the Top Card.");
+        System.out.println("- You can always play an 8, and then you can change the suit to whatever you want.");
+        System.out.println("- If you have no valid card to play, you can draw up to 3 cards from the deck. You can't draw if you have any cards that you can play in your hand. If you've drawn 3 cards and still can't play you must pass and the next player plays.");
+        System.out.println("- If the deck is empty and neither player can make anymore progress, the game is over and the winner is determined by the player with the least amount of cards in their hand.");
+        System.out.println("First to get rid of all their cards wins. Good luck, and have fun!");
+        printSeparator();
+    }
+
+    private void printSeparator() {
+        System.out.println("******************************");
     }
 
     public void getPlayerNames() {
@@ -49,19 +69,20 @@ public class Game {
         this.player2.setName(sc.nextLine());
     }
 
-    // To start the game, each player is dealt 8 cards
+    // To start the game, each player is dealt 7 cards
     public void dealCards() {
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 7; i++) {
             player1.addCard(deck.deal());
             player2.addCard(deck.deal());
         }
     }
 
-    // Returns true if the card "matches" the top card
+    // Returns true if the card "matches" the top card or if its rank is 8
     public boolean isValid(Card card) {
-        return card.getSuit().equals(topCard.getSuit()) || card.getRank().equals(topCard.getRank());
+        return card.getRank().equals("8") || card.getSuit().equals(topCard.getSuit()) || card.getRank().equals(topCard.getRank());
     }
 
+    // Prints the current player's hand and displays corresponding indexes
     public void showHand(Player p) {
         System.out.println(p.getName() + "'s hand:");
         for (int i = 0; i < p.getHand().size(); i++) {
@@ -69,26 +90,31 @@ public class Game {
         }
     }
 
+    // Checks if the player's hand contains a valid card to play
     public boolean containsValidCard(Player p) {
         for (int i = 0; i < p.getHand().size(); i++) {
-            if (p.getHand().get(i).getSuit().equals(topCard.getSuit()) || p.getHand().get(i).getRank().equals(topCard.getRank())) {
+            if (isValid(p.getHand().get(i))) {
                 return true;
             }
         }
         return false;
     }
 
+    // Method for the player to draw a card from the deck
     public void drawCard(Player p) {
         p.getHand().add(deck.deal());
     }
 
+    // Method for when the player plays an 8 (wildcard)
     public void playEight() {
+        // CONTENT STANDARD: Can use if, while, and for.
         while (true) {
             Scanner sc = new Scanner(System.in);
             System.out.println("Since you have played an 8, you may choose to change the suit. Change the suit to Hearts, Clubs, Diamonds, or Spades (case sensitive!): ");
             String input = sc.nextLine();
             if (input.equals("Hearts") || input.equals("Clubs") || input.equals("Diamonds") || input.equals("Spades")) {
                 topCard.setSuit(input);
+                topCard.setRank("8");
                 return;
             } else {
                 System.out.println("Please enter a valid suit.");
@@ -99,13 +125,16 @@ public class Game {
     public void takeTurn(Player p) {
         Scanner sc = new Scanner(System.in);
 
+        printSeparator();
         System.out.println(p.getName() + "'s Turn");
         System.out.println("Top card: " + topCard);
         showHand(p);
         String input;
+        // numDraws keeps track of how many times a player has drawn in one round
         int numDraws = 0;
         int index;
         Card chosen;
+        // CONTENT STANDARD: Can use if, while, and for.
         while (!containsValidCard(p)) {
             if (numDraws == 3) {
                 System.out.println("You have now drawn 3 times in a row, so we will skip your turn.");
@@ -129,18 +158,18 @@ public class Game {
             showHand(p);
         }
         while (true) {
-            System.out.println("Choose a card index to play: ");
+            System.out.println("Enter the index of the card you would like to play: ");
             index = sc.nextInt();
             if (index < 0 || index >= p.getHand().size()) {
                 System.out.println("Invalid index. Try again!");
                 continue;
             }
             chosen = p.getHand().get(index);
-            if (!isValid(chosen)) {
-                System.out.println("You cannot play this card. Choose a matching suit or rank.");
-            } else if (chosen.getRank().equals("8")) {
+            if (chosen.getRank().equals("8")) {
                 playEight();
                 break;
+            } else if (!isValid(chosen)) {
+                System.out.println("You cannot play this card. Choose a matching suit or rank.");
             } else {
                 topCard = chosen;
                 break;

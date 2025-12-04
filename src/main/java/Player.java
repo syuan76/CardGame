@@ -1,12 +1,11 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Player {
     // Instance variables
     private String name;
     private ArrayList<Card> hand;
     private int points;
-    // failedDraw will be true when the player has attempted to draw from an empty deck. When failedDraw is true for both players, I will end the game.
+    // failedDraw will be true when the player has attempted to draw from an empty deck. When failedDraw is true for both players, I will end the game because that means neither player can make progress anymore.
     private boolean failedDraw;
 
     // Constructor that takes in a name
@@ -54,13 +53,6 @@ public class Player {
 
     public void addCard(Card card) {
         hand.add(card);
-    }
-
-    public Card playCard() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println(name + ", please choose a card to play (enter the index of a card in your hand): ");
-        int index = sc.nextInt();
-        return hand.get(index);
     }
 
     public String toString() {
