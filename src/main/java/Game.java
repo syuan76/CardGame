@@ -82,6 +82,20 @@ public class Game {
         p.getHand().add(deck.deal());
     }
 
+    public void playEight() {
+        while (true) {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Since you have played an 8, you may choose to change the suit. Change the suit to Hearts, Clubs, Diamonds, or Spades (case sensitive!): ");
+            String input = sc.nextLine();
+            if (input.equals("Hearts") || input.equals("Clubs") || input.equals("Diamonds") || input.equals("Spades")) {
+                topCard.setSuit(input);
+                return;
+            } else {
+                System.out.println("Please enter a valid suit.");
+            }
+        }
+    }
+
     public void takeTurn(Player p) {
         Scanner sc = new Scanner(System.in);
 
@@ -124,12 +138,15 @@ public class Game {
             chosen = p.getHand().get(index);
             if (!isValid(chosen)) {
                 System.out.println("You cannot play this card. Choose a matching suit or rank.");
+            } else if (chosen.getRank().equals("8")) {
+                playEight();
+                break;
             } else {
+                topCard = chosen;
                 break;
             }
         }
         p.getHand().remove(index);
-        topCard = chosen;
     }
 
     public boolean ifGameOver() {
