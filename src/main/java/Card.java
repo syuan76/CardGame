@@ -1,14 +1,17 @@
 public class Card {
+    // Instance variables
     private String suit;
     private String rank;
     private int value;
 
+    // Constructor
     public Card(String suit, String rank, int value) {
         this.suit = suit;
         this.rank = rank;
         this.value = value;
     }
 
+    // Getters
     public String getSuit() {
         return suit;
     }
@@ -21,6 +24,7 @@ public class Card {
         return value;
     }
 
+    // Setters
     public void setSuit(String suit) {
         this.suit = suit;
     }
