@@ -1,13 +1,16 @@
+import java.awt.*;
+
 public class Card {
     // Instance variables
     private String suit;
     private String rank;
     private int value;
+    private Image image;
 
     // Constructor
-    public Card(String suit, String rank, int value) {
-        this.suit = suit;
+    public Card(String rank, String suit, int value) {
         this.rank = rank;
+        this.suit = suit;
         this.value = value;
     }
 
@@ -24,6 +27,10 @@ public class Card {
         return value;
     }
 
+    public Image getImage() {
+        return image;
+    }
+
     // Setters
     public void setSuit(String suit) {
         this.suit = suit;
@@ -35,6 +42,10 @@ public class Card {
 
     public void setValue(int value) {
         this.value = value;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     public String toString() {

@@ -9,17 +9,21 @@ public class Game {
     private Deck deck;
     private Card topCard;
 
+    private GameView window;
+
     // Constructor
     public Game() {
         // CONTENT STANDARD: Declare, initialize and assign a value to a variable, be it a primitive or object.
         this.player1 = new Player("1");
         this.player2 = new Player("2");
 
-        String[] ranks = {"2","3","4","5","6","7","8","9","10","J","Q","K","A"};
-        String[] suits = {"Hearts", "Clubs", "Diamonds", "Spades"};
+        this.window = new GameView(this);
+
+        String[] ranks = {"A", "2","3","4","5","6","7","8","9","10","J","Q","K"};
+        String[] suits = {"Spades", "Hearts", "Diamonds", "Clubs"};
         int[] values   = {2,3,4,5,6,7,8,9,10,10,10,10,11};
 
-        this.deck = new Deck(suits, ranks, values);
+        this.deck = new Deck(ranks, suits, values);
     }
 
     public void playGame() {

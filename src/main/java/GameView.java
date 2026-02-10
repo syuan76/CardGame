@@ -7,12 +7,9 @@ public class GameView extends JFrame {
     private final int TITLE_BAR_HEIGHT = 23;
 
     private Game backend;
-    private Image[] cardImages;
 
     public GameView(Game backend) {
         this.backend = backend;
-
-        // TODO: upload images and add to cardImages
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle("Crazy 8's");
