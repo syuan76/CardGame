@@ -17,7 +17,7 @@ public class Deck {
         }
 
         for (int i = 0; i < cards.size(); i++) {
-            cards.get(i).setImage(new ImageIcon("resources/" + Integer.toString(i) + ".png").getImage());
+            cards.get(i).setImage(new ImageIcon("src/main/resources/" + (i+1) + ".png").getImage());
         }
         cardsLeft = cards.size();
     }

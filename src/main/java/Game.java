@@ -10,6 +10,11 @@ public class Game {
     private Card topCard;
 
     private GameView window;
+    private int state;
+
+    public static final int STATE_INSTR = 0;
+    public static final int STATE_MAIN = 1;
+    public static final int STATE_END = 2;
 
     // Constructor
     public Game() {
@@ -18,6 +23,7 @@ public class Game {
         this.player2 = new Player("2");
 
         this.window = new GameView(this);
+        state = STATE_INSTR;
 
         String[] ranks = {"A", "2","3","4","5","6","7","8","9","10","J","Q","K"};
         String[] suits = {"Spades", "Hearts", "Diamonds", "Clubs"};
@@ -26,8 +32,14 @@ public class Game {
         this.deck = new Deck(ranks, suits, values);
     }
 
+    public int getState() {
+        return state;
+    }
+
     public void playGame() {
         printInstructions();
+
+        state = STATE_MAIN;
         this.deck.shuffle();
         getPlayerNames();
         dealCards();
